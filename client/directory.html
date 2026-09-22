@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directory — Mohalla Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container-narrow d-flex align-items-center justify-content-between">
+    <a href="index.html" class="brand">Mohalla<span class="brand-dot">.</span>Guide</a>
+    <div class="d-flex align-items-center">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="directory.html">Directory</a>
+        <a href="submit.html">List your business</a>
+      </div>
+      <button class="theme-toggle" aria-label="Toggle dark mode">
+        <span class="icon-moon">🌙</span>
+        <span class="icon-sun">☀️</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<section class="container-narrow" style="padding: 3.5rem 0;">
+  <div class="section-head">
+    <h2>The directory</h2>
+    <p>Search by name or filter by category to find what's nearby.</p>
+  </div>
+
+  <div class="directory-toolbar">
+    <div class="search-field">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by business name…">
+    </div>
+    <select id="categorySelect" class="category-select">
+      <option value="">All categories</option>
+      <option value="Food">Food</option>
+      <option value="Fashion">Fashion</option>
+      <option value="Tech">Tech</option>
+      <option value="Health">Health</option>
+      <option value="Education">Education</option>
+      <option value="Services">Services</option>
+      <option value="Retail">Retail</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <div class="biz-grid" id="biz-grid"></div>
+</section>
+
+<!-- Details modal -->
+<div class="modal fade" id="businessModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalBusinessName"></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container-narrow d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+      <div class="brand">Mohalla<span class="brand-dot">.</span>Guide</div>
+      <p style="margin:0;">A simple directory for local businesses.</p>
+    </div>
+    <div>
+      <a href="index.html">Home</a> &middot; <a href="submit.html">List a business</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/directory.js"></script>
+</body>
+</html>
