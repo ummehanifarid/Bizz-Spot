@@ -6,6 +6,7 @@ const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
+const router = express.Router();
 
 app.use(cors());
 app.use(express.json());
@@ -19,7 +20,7 @@ const supabase = createClient(
 // ===============================
 // GET ALL BUSINESSES
 // ===============================
-app.get('/businesses', async (req, res) => {
+router.get('/businesses', async (req, res) => {
   try {
     const { q, category } = req.query;
 
@@ -43,18 +44,17 @@ app.get('/businesses', async (req, res) => {
 
     if (error) {
       console.error('Supabase error:', error);
-
       return res.status(500).json({
         error: error.message
       });
     }
 
-    res.status(200).json(data || []);
+    return res.status(200).json(data || []);
 
   } catch (error) {
-    console.error('Server error:', error);
+    console.error('Businesses error:', error);
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Failed to load businesses'
     });
   }
@@ -64,7 +64,7 @@ app.get('/businesses', async (req, res) => {
 // ===============================
 // GET BUSINESS STATS
 // ===============================
-app.get('/businesses/stats', async (req, res) => {
+router.get('/businesses/stats', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('businesses')
@@ -72,7 +72,6 @@ app.get('/businesses/stats', async (req, res) => {
 
     if (error) {
       console.error('Supabase error:', error);
-
       return res.status(500).json({
         error: error.message
       });
@@ -88,7 +87,7 @@ app.get('/businesses/stats', async (req, res) => {
       data.map(b => b.category)
     ).size;
 
-    res.status(200).json({
+    return res.status(200).json({
       total,
       cities,
       categories
@@ -97,7 +96,7 @@ app.get('/businesses/stats', async (req, res) => {
   } catch (error) {
     console.error('Stats error:', error);
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Failed to load statistics'
     });
   }
@@ -105,9 +104,9 @@ app.get('/businesses/stats', async (req, res) => {
 
 
 // ===============================
-// ADD NEW BUSINESS
+// ADD BUSINESS
 // ===============================
-app.post('/businesses', async (req, res) => {
+router.post('/businesses', async (req, res) => {
   try {
     const {
       business_name,
@@ -149,17 +148,15 @@ app.post('/businesses', async (req, res) => {
 
     const { data, error } = await supabase
       .from('businesses')
-      .insert([
-        {
-          business_name,
-          owner_name,
-          category,
-          city,
-          tagline,
-          website,
-          email
-        }
-      ])
+      .insert([{
+        business_name,
+        owner_name,
+        category,
+        city,
+        tagline,
+        website,
+        email
+      }])
       .select();
 
     if (error) {
@@ -170,19 +167,22 @@ app.post('/businesses', async (req, res) => {
       });
     }
 
-    res.status(201).json(data[0]);
+    return res.status(201).json(data[0]);
 
   } catch (error) {
     console.error('Add business error:', error);
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Failed to add business'
     });
   }
 });
 
 
-// ===============================
-// NETLIFY FUNCTION
-// ===============================
+// IMPORTANT:
+// Netlify /api/* rewrite is handled here.
+app.use('/api/', router);
+
+
+// Netlify function handler
 module.exports.handler = serverless(app);
