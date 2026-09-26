@@ -1,5 +1,5 @@
 /* ============================================================
-   Mohalla Guide — design tokens & base styles
+   Bizz Spot — design tokens & base styles
    Local business directory: warm, printed-directory feel.
    ============================================================ */
 
@@ -90,6 +90,14 @@ a:hover { color: var(--marigold-dark); }
 }
 .brand:hover { color: var(--ink); }
 .brand .brand-dot { color: var(--marigold); }
+.brand-logo { align-items: center; }
+.brand-logo img { display: block; height: 36px; width: auto; }
+.site-footer .brand-logo img { height: 30px; }
+html[data-theme="dark"] .brand-logo {
+  background: #faf6ee;
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+}
 
 .nav-links a {
   color: var(--charcoal-soft);
@@ -430,8 +438,76 @@ html[data-theme="dark"] .btn-close { filter: invert(1); }
 
 /* ---------- Utility ---------- */
 .container-narrow { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+.content-section { padding: 4.5rem 1.5rem; }
+.directory-page { padding: 3.5rem 1.5rem; }
+.submit-page { padding: 3.5rem 1.5rem 5rem; }
 
 @media (max-width: 767px) {
-  .ledger-item { flex: 1 1 45%; border-right: none; margin-right: 0; padding-right: 0; border-bottom: 1px solid var(--line); }
-  .nav-links { display: none; }
+  .site-nav { padding: 0.8rem 0; }
+  .brand-logo img { height: 32px; }
+  .site-nav .container-narrow { flex-wrap: wrap; row-gap: 0.75rem; }
+  .site-nav .container-narrow > .d-flex { width: 100%; justify-content: space-between; }
+  .nav-links { display: flex; flex: 1; justify-content: space-between; }
+  .nav-links a { margin-left: 0; font-size: 0.9rem; }
+  .theme-toggle { flex-shrink: 0; margin-left: 0.65rem; }
+
+  .hero { padding: 3rem 0 2.5rem; }
+  .hero h1 { font-size: clamp(2.15rem, 9vw, 3rem); }
+  .hero p.lead { font-size: 1rem; margin: 1rem 0 1.5rem; }
+  .hero-actions { flex-direction: column; gap: 0.75rem; }
+  .hero-actions a { justify-content: center; width: 100%; }
+
+  .ledger { margin-top: 2.5rem; }
+  .ledger-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
+  .ledger-item,
+  .ledger-item:last-child {
+    min-width: 0;
+    margin: 0;
+    padding: 1rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .ledger-number { font-size: 2.1rem; }
+  .ledger-label { font-size: 0.78rem; line-height: 1.35; }
+
+  .content-section { padding: 3rem 1.5rem; }
+  .directory-page { padding: 2.75rem 1.5rem 3rem; }
+  .submit-page { padding: 2.75rem 1.5rem 3.5rem; }
+  .section-head { margin-bottom: 1.5rem; }
+  .section-head p { margin-bottom: 0; }
+
+  .directory-toolbar { gap: 0.7rem; margin-bottom: 1.5rem; }
+  .search-field,
+  .category-select { flex: 1 1 100%; width: 100%; min-width: 0; }
+  .search-field input,
+  .category-select { min-height: 48px; }
+  .biz-grid { grid-template-columns: 1fr; gap: 0.9rem; }
+  .biz-card { padding: 1.2rem; }
+  .empty-state,
+  .loading-state { padding: 2.5rem 1rem; }
+
+  .form-card { padding: 1.25rem; }
+  .form-row { gap: 0; }
+  .form-field { margin-bottom: 1.1rem; }
+  .form-field input,
+  .form-field select,
+  .form-field textarea { min-height: 48px; }
+  #submitBtn { justify-content: center; width: 100%; min-height: 48px; }
+  .success-panel .d-flex { flex-direction: column; }
+  .success-panel .d-flex > * { justify-content: center; width: 100%; }
+
+  .site-footer { margin-top: 3rem; padding: 2rem 0; }
+  .site-footer .container-narrow { align-items: flex-start !important; }
+  .modal-dialog { margin: 0.75rem; }
+}
+
+@media (max-width: 380px) {
+  .site-nav .container-narrow { padding-right: 1rem; padding-left: 1rem; }
+  .nav-links a { font-size: 0.82rem; }
+  .theme-toggle { margin-left: 0.5rem; }
+  .ledger-row { gap: 0.4rem; }
+  .ledger-item,
+  .ledger-item:last-child { padding: 0.85rem 0.4rem; }
+  .ledger-number { font-size: 1.85rem; }
+  .ledger-label { font-size: 0.72rem; }
 }

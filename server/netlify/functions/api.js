@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const serverless = require('serverless-http');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 
@@ -9,8 +10,11 @@ app.use(express.json());
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-// GET all businesses (with optional search & category filter)
-app.get('/api/businesses', async (req, res) => {
+// Note: routes are defined WITHOUT the /api prefix here.
+// netlify.toml redirects /api/* -> /.netlify/functions/api/:splat,
+// so by the time a request reaches this function, /api has already been stripped.
+
+app.get('/businesses', async (req, res) => {
   const { q, category } = req.query;
   let query = supabase.from('businesses').select('*').order('created_at', { ascending: false });
 
@@ -22,8 +26,7 @@ app.get('/api/businesses', async (req, res) => {
   res.json(data);
 });
 
-// GET stats for home page counters
-app.get('/api/businesses/stats', async (req, res) => {
+app.get('/businesses/stats', async (req, res) => {
   const { data, error } = await supabase.from('businesses').select('city, category');
   if (error) return res.status(500).json({ error: error.message });
 
@@ -34,8 +37,7 @@ app.get('/api/businesses/stats', async (req, res) => {
   res.json({ total, cities, categories });
 });
 
-// POST a new business
-app.post('/api/businesses', async (req, res) => {
+app.post('/businesses', async (req, res) => {
   const { business_name, owner_name, category, city, tagline, website, email } = req.body;
 
   const fields = {};
@@ -58,5 +60,4 @@ app.post('/api/businesses', async (req, res) => {
   res.status(201).json(data[0]);
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports.handler = serverless(app);

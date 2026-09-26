@@ -92,11 +92,22 @@ function loadBusinesses() {
       allBusinesses = data || [];
       renderCards(allBusinesses);
     })
-    .fail(function () {
+    .fail(function (request) {
+      let message;
+      if (request.status === 0 && location.protocol === "file:") {
+        message = "The local directory server isn't running or can't reach its database. Start the backend with valid Supabase settings in server/.env, then retry.";
+      } else if (request.status === 0) {
+        message = "The directory server couldn't be reached. Check your connection, then retry.";
+      } else if (request.status >= 500) {
+        message = "The directory server couldn't load its database. Check the server and database settings, then retry.";
+      } else {
+        message = `The directory endpoint returned an error (HTTP ${request.status}). Please retry in a moment.`;
+      }
+
       $("#biz-grid").html(`
         <div class="empty-state" style="grid-column: 1 / -1;">
-          <p>Couldn't reach the directory right now.</p>
-          <p>Refresh the page in a moment to try again.</p>
+          <p>${message}</p>
+          <button type="button" class="btn-outline-brand" id="retry-directory">Retry</button>
         </div>
       `);
     });
@@ -104,6 +115,7 @@ function loadBusinesses() {
 
 $(function () {
   loadBusinesses();
+  $("#biz-grid").on("click", "#retry-directory", loadBusinesses);
   $("#searchInput").on("keyup", applyFilters);
   $("#categorySelect").on("change", applyFilters);
 });

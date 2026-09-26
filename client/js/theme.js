@@ -1,17 +1,18 @@
 // Dark mode toggle — remembers choice in localStorage
 (function () {
   const root = document.documentElement;
-  const saved = localStorage.getItem("mohalla-theme");
+  const saved = localStorage.getItem("bizz-spot-theme") || localStorage.getItem("mohalla-theme");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const initial = saved || (prefersDark ? "dark" : "light");
   root.setAttribute("data-theme", initial);
+  if (saved) localStorage.setItem("bizz-spot-theme", saved);
 
   $(function () {
     $(".theme-toggle").on("click", function () {
       const current = root.getAttribute("data-theme");
       const next = current === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      localStorage.setItem("mohalla-theme", next);
+      localStorage.setItem("bizz-spot-theme", next);
     });
 
     // Highlight the current page in the nav
